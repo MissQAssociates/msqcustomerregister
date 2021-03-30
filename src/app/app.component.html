@@ -1,0 +1,152 @@
+<div class="background">
+  <mat-card>
+    <!-- <div class="back">
+      <mat-icon name="arrow-back" [routerLink]="['/home']">keyboard_backspace</mat-icon>
+    </div> -->
+    <div id="container1">
+      <img alt="logo" id="header_logo" height="100" float-left src="assets/images/msqlogo.png" /><br />
+    </div>
+    <form #form="ngForm" (ngSubmit)="register(form)" novalidate>
+      <br />
+      <mat-card-title>
+        <div id='createAccount' text-center>
+          <h3>Create Your Account!</h3>
+        </div>
+      </mat-card-title>
+      <mat-card-content>
+        <div padding>
+          <div class="input-container">
+            &nbsp;
+            <mat-icon class="icon">account_circle</mat-icon>&nbsp;
+        
+            <input [(ngModel)]="user.name" name='name'  type="text" #nameCtrl="ngModel"
+            placeholder=" Full Name" ngModel required autocomplete="off">
+          </div>
+          <label *ngIf="!nameCtrl.valid && nameCtrl.touched && nameCtrl.errors?.required">
+            <h4 color="danger">Name is required</h4>
+          </label><br />
+          <div class="input-container">
+            <mat-icon class="icon">location_on</mat-icon>&nbsp;
+            <input [(ngModel)]="user.address" name="address" #addCtrl="ngModel" type="text"
+            placeholder="Address" ngModel required autocomplete="off">
+          </div>
+          <label *ngIf="!addCtrl.valid && addCtrl.touched && addCtrl.errors?.required">
+            <h4 color="danger">Address is required</h4>
+          </label><br />
+          <div class="input-container">
+            <mat-icon class="icon">phone</mat-icon>&nbsp;
+          
+            <mat-form-field appearance="fill" id='countryCode'>
+              <mat-select name="code" [(ngModel)]="user.code" type="text" #codeCtrl="ngModel" placeholder="Country Code" 
+              ngModel required>
+              <mat-option *ngFor="let per of dataList" [value]="per.dial_code">{{per.dial_code}}</mat-option>
+            </mat-select>
+            </mat-form-field>
+            <input [(ngModel)]="user.phone" id='phone'name="phone" #addCtrl="ngModel" type="number" #phoneCtrl="ngModel"
+            placeholder="Phone Number" ngModel required number autocomplete="off">
+          </div>
+          <label *ngIf="!codeCtrl.valid && codeCtrl.touched && codeCtrl.errors?.required">
+            <h4 color="danger">Country Code is required</h4>
+          </label><br />
+          <label *ngIf="!phoneCtrl.valid && phoneCtrl.touched && phoneCtrl.errors?.required">
+            <h4 color="danger">Phone Number is required</h4>
+          </label><br />
+          <div class="input-container">
+            <mat-icon  class="icon">mail_outline</mat-icon>&nbsp;
+            <input [(ngModel)]="user.email" name="email" type="email" #emailCtrl="ngModel"
+            pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" placeholder="your@gmail.com" ngModel required
+            email autocomplete="off">
+          </div>
+          <label *ngIf="!emailCtrl.valid && emailCtrl.touched && emailCtrl.errors?.required">
+            <h4 color="danger">Email is required</h4>
+          </label><br />
+          <div class="input-container">
+            <label for="birth_date"><h4 id='birth_date'>Birth Date</h4></label><br><br><br>
+            <input [(ngModel)]="user.birth_date"  name="birth_date" type="date" #dateCtrl="ngModel"
+            placeholder="Birth Date" ngModel required autocomplete="off">
+          </div>
+          <label *ngIf="!dateCtrl.valid && dateCtrl.touched && dateCtrl.errors?.required">
+            <h4 color="danger">Date is required.</h4>
+          </label><br />
+          <div class="input-container">
+            <mat-icon  class="icon">vpn_key</mat-icon>&nbsp;
+            <input  type="{{type}}" name="password" [(ngModel)]="user.password" compare-password="confirm"
+                type="password" #password="ngModel" [ngClass]="{ 'is-invalid': form.submitted && password.invalid}"
+                placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" ngModel minlength="6" required
+                (ionInput)="validatePassword($event)" (ionBlur)="onBlur($event)" autocomplete="off">
+            <button class="btnEye" *ngIf="!showPass"  color="dark" type="button" item-right
+              (click)="showPassword()">
+              <mat-icon  class= 'passIcon'style="font-size: 25px"> visibility_off</mat-icon>
+            </button>
+            <button class="btnEye" *ngIf="showPass"  color="dark" type="button" item-right
+              (click)="showPassword()">
+              <mat-icon style="font-size: 25px">visibility</mat-icon>
+            </button>
+          </div><br />
+          <label *ngIf="!password.valid && password.touched && password.errors?.required">
+            <h4 color="danger">Password is required</h4>
+          </label>
+          <div id="message">
+            <h3>Password must contain the following:</h3>
+            <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+            <p id="capital" class="invalid">
+              A <b>capital (uppercase)</b> letter
+            </p>
+            <p id="number" class="invalid">A <b>number</b></p>
+            <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+          </div>
+          <div class="input-container">
+            <mat-icon  class="icon">vpn_key</mat-icon>&nbsp;
+            <input  name="confirm" type="{{type1}}" [(ngModel)]="user.confirm" mustMatch="password"
+            type="password" #confirm="ngModel" [ngClass]="{ 'is-invalid': form.submitted && confirm.invalid}"
+            placeholder="Confirm Password" pattern="{{password.value}}" ngModel required
+            (ionInput)="confirmPassword($event)" autocomplete="off">
+            <button class="btnEye" *ngIf="!showPass1"  color="dark" type="button" item-right
+              (click)="showPasswordConfirm()">
+              <mat-icon  class= 'passIcon' style="font-size: 25px">visibility_off</mat-icon>
+            </button>
+            <button class="btnEye" *ngIf="showPass1"  color="dark" type="button" item-right
+              (click)="showPasswordConfirm()">
+              <mat-icon style="font-size: 25px">visibility</mat-icon>
+            </button>
+          </div>
+          <label *ngIf="!confirm.valid && confirm.touched && confirm.errors?.required">
+            <h4 color="danger">Confirm Password is required</h4>
+          </label><br />
+          <label *ngIf="passwordMatch == false">
+            <h4 color="danger">Password must match</h4>
+          </label><br />
+          <div class="input-container">
+            <mat-icon class="icon">perm_media</mat-icon>&nbsp;
+            <label slot="end">Picture(Selfie)</label>
+            <input  name="picture" [(ngModel)]="picture" type="file"
+                (change)="loadImageFromDevice($event, 'selfie')" id="file-input" accept="image/png, image/jpeg"
+                name="picture" #picCtrl="ngModel" ngModel required autocomplete="off">
+          </div>
+          <div class="input-container">
+            <mat-icon class="icon">perm_media</mat-icon>&nbsp;
+            <label slot="end">Picture(ID)</label>
+            <input  (change)="loadImageFromDevice($event,'idPic')" id="file-input"
+            accept="image/png, image/jpeg" name="id_image" [(ngModel)]="id_image" type="file" #picCtrl="ngModel"
+            placeholder="ID Picture" ngModel required autocomplete="off">
+          </div><br />
+          <div class="input-container">
+            <mat-icon class="icon">perm_identity</mat-icon>&nbsp;
+            <input  name="id_number" [(ngModel)]="user.id_number"  type="number" #idCtrl="ngModel"
+                placeholder="ID Number" ngModel required number autocomplete="off">
+          </div>
+          <label *ngIf="!idCtrl.valid && idCtrl.touched">
+            <h4 color="danger">ID Number is not valid</h4>
+          </label><br />
+        </div>
+        <br />
+        <div>
+          <button  id='submitButton' mat-raised-button color="accent"size="large"  type="submit" color="secondary"  [disabled]="form.invalid"  expand="block">
+            Submit</button>
+           
+        </div>
+      </mat-card-content>
+    </form>
+  </mat-card>
+</div>
+<!-- okii -->
