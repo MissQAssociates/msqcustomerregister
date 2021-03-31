@@ -79,9 +79,12 @@ export class AppComponent {
   }
 
   async register(form) {
+    console.log(form.value, 'value')
+    console.log(this.user, 'user');
+    
     await this.present();
     // form.value.id_image = this.idPic.name;
-    let formData = form.value;
+    let formData = this.user;
     formData.id_image = this.user.id_image;
     formData.picture = this.user.picture;
     console.log(formData);
