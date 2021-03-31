@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { User } from './models/user';
 import { CountryCodes } from './models/country-codes';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -19,7 +20,7 @@ export class AppComponent {
   idPic: any;
   picture: ""
   id_image: ""
-  value=''
+  value = ''
   passwordMatch: Boolean = null;
 
   public type = 'password';
@@ -83,7 +84,7 @@ export class AppComponent {
     formData.id_image = this.user.id_image;
     formData.picture = this.user.picture;
     console.log(formData);
-    
+
     this.authService.register(formData).subscribe(async (response) => {
       if (response['status'] == 200) {
         console.log('account succesfully added!')
@@ -109,7 +110,21 @@ export class AppComponent {
           // this.router.navigateByUrl("login");
           // }
         })
+        Swal.fire({
+          // position: 'top-end',
+          icon: 'success',
+          title: 'Please login your account to the application!',
+          showConfirmButton: true,
+          // timer: 1500
+        })
       } else {
+        Swal.fire({
+          // position: 'top-end',
+          icon: 'error',
+          title: response['message'],
+          showConfirmButton: true,
+          // timer: 3000
+        })
         this.dismiss(response['message'], 'danger')
       }
     }, async (error) => {
