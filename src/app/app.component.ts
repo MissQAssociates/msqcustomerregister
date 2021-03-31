@@ -79,40 +79,25 @@ export class AppComponent {
   }
 
   async register(form) {
-    console.log(form.value, 'value')
-    console.log(this.user, 'user');
-    
     await this.present();
     // form.value.id_image = this.idPic.name;
     let formData = this.user;
     formData.id_image = this.user.id_image;
     formData.picture = this.user.picture;
-    console.log(formData);
 
     this.authService.register(formData).subscribe(async (response) => {
       if (response['status'] == 200) {
-        console.log('account succesfully added!')
         let success = await response
         this.isSubmitted = true;
         this.dismiss(success['message'], 'success');
         // this.router.navigateByUrl("login");
 
-        console.log(response, 'response');
         let id = response['user']['_id']
         this.authService.uploadImage(this.idPic, this.selfie, this.user.id_image, this.user.picture).subscribe(res => {
-          console.log(res);
-          // if (res['status'] != 200) {
-          //   console.log(id);
-
-          //   // this.authService.deleteAccount(id).subscribe(res=>{
-          //   //   console.log(res);
-
-          //   // })
-          // } else {
+    
           this.isSubmitted = true;
           this.dismiss(success['message'], 'success');
-          // this.router.navigateByUrl("login");
-          // }
+
         })
         Swal.fire({
           // position: 'top-end',
@@ -141,16 +126,6 @@ export class AppComponent {
 
   async present() {
     this.isLoading = true;
-    // return await this.loadingController.create({
-    //   message: 'Creating account...',
-    // }).then(a => {
-    //   a.present().then(() => {
-    //     console.log('presented');
-    //     if (!this.isLoading) {
-    //       a.dismiss().then(() => console.log('abort presenting'));
-    //     }
-    //   });
-    // });
   }
 
   async dismiss(message, type) {
@@ -161,16 +136,7 @@ export class AppComponent {
     // });
   }
 
-  async presentToast(text, type) {
-    // const toast = await this.toastController.create({
-    //   message: text,
-    //   color: type,
-    //   position: 'top',
-    //   duration: 3000
-    // })
 
-    // toast.present();
-  }
 
   noSubmit(e) {
     e.preventDefault();
@@ -178,7 +144,6 @@ export class AppComponent {
 
   loadImageFromDevice(event, type) {
     if (event.target.files.length == 0) {
-      console.log("No file selected!");
       return
     }
     let file = (event.target as HTMLInputElement).files[0];
@@ -200,10 +165,6 @@ export class AppComponent {
         this.user.id_image = this.idPic.name
       }
 
-      // this.authService.uploadImage(this.idPic, this.user.id_image).subscribe(() => {
-
-      // })
-      // console.log(this.idPic);
 
     };
     reader.onerror = error => {
@@ -280,44 +241,4 @@ export class AppComponent {
   onBlur(event) {
     document.getElementById("message").style.display = "none";
   }
-
-  //   async getPicture() {
-
-  //     const image = await Camera.getPhoto({
-  //       quality: 60,
-  //       allowEditing: true,
-  //       resultType: CameraResultType.Base64,
-  //       source: CameraSource.Prompt,
-  //     });
-
-  //     this.selfie = this.b64toBlob(image.base64String, `image/${image.format}`);
-  //     this.user.picture = `${Date.now()}.${image.format}`
-
-  //     console.log(this.selfie);
-
-  //     // this.authService.uploadImage(this.selfie, this.user.picture).subscribe(() => {
-
-  //     // })
-
-  //   }
-
-  //   b64toBlob(b64Data, contentType = '', sliceSize = 512) {
-  //     const byteCharacters = atob(b64Data);
-  //     const byteArrays = [];
-
-  //     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-  //       const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-  //       const byteNumbers = new Array(slice.length);
-  //       for (let i = 0; i < slice.length; i++) {
-  //         byteNumbers[i] = slice.charCodeAt(i);
-  //       }
-
-  //       const byteArray = new Uint8Array(byteNumbers);
-  //       byteArrays.push(byteArray);
-  //     }
-
-  //     const blob = new Blob(byteArrays, { type: contentType });
-  //     return blob;
-  //   }
 }
