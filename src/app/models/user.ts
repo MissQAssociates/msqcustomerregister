@@ -9,5 +9,6 @@ export interface User {
     confirm: string,
     picture: string,
     id_image: string,
-    id_number: number
+    id_number: number,
+    customerSituation: string
 }

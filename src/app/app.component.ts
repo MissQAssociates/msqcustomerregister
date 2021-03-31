@@ -49,7 +49,8 @@ export class AppComponent {
       confirm: "",
       picture: "",
       id_image: "",
-      id_number: null
+      id_number: null,
+      customerSituation: 'activate'
     };
 
     fetch('assets/country-code.json').then(async res => {
